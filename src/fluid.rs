@@ -38,7 +38,8 @@ impl FluidCube {
             vz0: vec![0.0; total_cells],
         }
     }
-
+    //index function takes three coordinates, and gives the corresponding array index in a one-dimensional array 
+    //its kind of a hash table basically kind of not really 
     pub fn ix(&self, x: usize, y: usize, z: usize) -> usize {
         x + y * self.size + z * self.size * self.size
     }
@@ -51,5 +52,24 @@ impl FluidCube {
         cube.Vx[index] += amountX;
         cube.Vy[index] += amountY;
         cube.Vz[index] += amountZ;
+    }
+}
+//this is gonna do some funky wall stuff, walls are essentially more cells that just have normal reactions.
+
+fn set_bnd(b:i32,x:&mut f32,N:usize) {
+    //these loops sets the top and bottom 
+    for j in 1..N -1 {
+        for i in 1..N -1 {  
+            let nearfront = ix(i,j,1,n);
+            let front = ix(i,j,0,n);
+
+            x[front] = if b == 3 {
+                -x[nearfront]
+            } else {
+                x[nearfront]
+            };
+            let near_back = ix(i, j, n-2, n);
+            let back = ix(i,j,n-1,n);
+        }
     }
 }
