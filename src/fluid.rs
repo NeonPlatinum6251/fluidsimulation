@@ -228,6 +228,19 @@ fn set_bnd(b:i32,x:&mut [f32],n:usize) {
 //black magic maths 
 /*most of the maths I do not understand below here its taken from this paper by Jon Stam
 https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf
+heres another explanation on how it works
+Since the matrix of this system is sparse (i.e contain a lot of zeros), this system can be solved efficiently (note that there exist more accurate algorithms) 
+using a Gauss-Seidel algorithm. at do we solve exactly ? For the diffusion, we try to find tthe densities which, when diffused backward in time, gives the density we 
+started with. In the case of the projection, it is a little more complicated. We are solving a linear system called a poisson equation. In mathematics, Poisson's equation 
+is a partial differential equation. To make sure that the fluid is incompressible, we need to satisfy the non-divergence condition. The divergence of a vector field 
+(the velicity of the fluid)at a particular location is a scalar value that essentially represents how much the field is ‘expanding’ at the point. A positive value 
+represents a divergence and a negative value represents a convergence or compression.If we use the assumption that a fluid is incompressible, then that implies that 
+the divergence of the velocity must be zero everywhere. A useful splitting method for solving the incompressible flow equations is the so-called ‘projection method’. In 
+this technique, one first computes a divergent vector field that results from the advection & viscosity terms, and then projects that entire vector field onto the space of 
+non-divergent vector fields This can be thought of as creating an instantaneous pressure field whose gradient compensates for any divergence caused by the advection & 
+viscosity. Getting back to the poisson equation, we create these beast to solve the unknown pressure field. The gradient of this pressure field is an additional force on 
+the fluid and the divergence of this gradient compensates for the divergence resulting from the convection-viscosity equation. The result is a final velocity field that 
+has no divergence.
 */
 //this function solves linear equations but who knows how
 fn lin_solve(b: i32, x: &mut [f32], x0: &[f32], a: f32, c: f32, iter: usize, n: usize,) {
