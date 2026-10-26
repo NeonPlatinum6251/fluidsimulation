@@ -43,15 +43,15 @@ impl FluidCube {
     pub fn ix(&self, x: usize, y: usize, z: usize) -> usize {
         x + y * self.size + z * self.size * self.size
     }
-    pub fn AddDensity(&mut self, x:usize, y:usize, z:usize, amount:f32) {
+    pub fn adddensity(&mut self, x:usize, y:usize, z:usize, amount:f32) {
         let index = self.ix(x,y,z);
         self.density[index] += amount;
     }
-    pub fn AddVelocity(&mut self, x:usize, y:usize, z:usize, amountY:f32, amountX:f32, amountZ:f32) {
+    pub fn addvelocity(&mut self, x:usize, y:usize, z:usize, amounty:f32, amountx:f32, amountz:f32) {
         let index = self.ix(x,y,z);
-        self.vx[index] += amountX;
-        self.vy[index] += amountY;
-        self.vz[index] += amountZ;
+        self.vx[index] += amountx;
+        self.vy[index] += amounty;
+        self.vz[index] += amountz;
     }
 
     //this is what it does everyframe
@@ -266,10 +266,10 @@ fn lin_solve(b: i32, x: &mut [f32], x0: &[f32], a: f32, c: f32, iter: usize, n: 
     }
 }
 
-fn diffuse(b:i32, x:&mut [f32], x0: &[f32], diff:f32, dt:f32, iter:usize, N:usize) {
-    let n_float =(N-2) as f32;
+fn diffuse(b:i32, x:&mut [f32], x0: &[f32], diff:f32, dt:f32, iter:usize, n:usize) {
+    let n_float =(n-2) as f32;
     let a = dt * diff * n_float * n_float;
-    lin_solve(b, x, x0, a, 1.0 + 6.0 * a, iter, N);
+    lin_solve(b, x, x0, a, 1.0 + 6.0 * a, iter, n);
 }   
 //this is for like letting stuff out the grid 
 //p is a temp grid for pressure 
